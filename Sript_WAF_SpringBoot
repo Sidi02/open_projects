@@ -1,1 +1,31 @@
-.....
+import json 
+
+import requests
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+
+
+
+gauth="Bearer ................."
+
+with open("D:\\jsonCoreEndpoint1.json.bak") as f:
+    endpoints = json.load(f)
+
+textReturn = ""
+for url in endpoints:
+    print(url)
+    
+    if url.get("method") == "GET":
+        r = requests.get("https://................../" + url.get("endPointPath"),
+                         headers={"content-type": "application/json", "GAuth": gauth},
+                         verify=False)
+
+    else:
+        r = requests.post("https://................../"" + url.get("endPointPath"),
+                      headers={"content-type": "application/json", "GAuth": gauth},
+                      verify=False)
+    textReturn+=" "+r.text
+    print(r.elapsed.total_seconds())
+with open('D:\\events.txt', 'a') as fd:
+    fd.write(textReturn)
